@@ -101,25 +101,6 @@
     so.observe(statsEl);
   } else { runCount(); }
 
-  /* ---------- petals ---------- */
-  if (!reduce) {
-    var petalWrap = $('#petals');
-    var colors = ['#edb9cb', '#ecc79a', '#e6a6b8', '#e3b9c9', '#d98ca3'];
-    if (petalWrap) {
-      for (var i = 0; i < 9; i++) {
-        var p = document.createElement('span');
-        p.className = 'petal';
-        var size = 8 + Math.random() * 8;
-        p.style.left = Math.random() * 100 + '%';
-        p.style.width = size + 'px'; p.style.height = size + 'px';
-        p.style.background = colors[i % colors.length];
-        p.style.animationDuration = (12 + Math.random() * 8) + 's';
-        p.style.animationDelay = (Math.random() * 12) + 's';
-        petalWrap.appendChild(p);
-      }
-    }
-  }
-
   /* ---------- custom cursor ---------- */
   if (!isTouch && !reduce) {
     var cur = $('#cursor');

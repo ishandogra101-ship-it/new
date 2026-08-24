@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <defs>
+    <g id="fl">
+      <ellipse cx="0" cy="-9" rx="4.4" ry="9"/>
+      <ellipse cx="0" cy="-9" rx="4.4" ry="9" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-9" rx="4.4" ry="9" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-9" rx="4.4" ry="9" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-9" rx="4.4" ry="9" transform="rotate(288)"/>
+      <circle r="4" fill="#c9a24a"/>
+    </g>
+    <g id="leaf"><path d="M0 0 C14 -6 20 -20 18 -34 C4 -28 -2 -14 0 0Z"/></g>
+    <g id="sprig" fill="#8ba06a">
+      <use href="#leaf" transform="translate(0 0) rotate(20)"/>
+      <use href="#leaf" transform="translate(0 -6) rotate(-30) scale(.8)"/>
+    </g>
+  </defs>
+  <g fill="#b06a86">
+    <!-- center flower + framing scrolls -->
+    <use href="#fl" transform="translate(120 120)"/>
+    <g fill="none" stroke="#b06a86" stroke-width="2" stroke-linecap="round">
+      <path d="M120 132 C120 160 96 168 96 190 M120 132 C120 160 144 168 144 190"/>
+      <path d="M120 108 C120 80 96 72 96 50 M120 108 C120 80 144 72 144 50"/>
+    </g>
+    <use href="#sprig" transform="translate(96 176) rotate(30) scale(.7)"/>
+    <use href="#sprig" transform="translate(144 176) rotate(-30) scale(-.7,.7)"/>
+    <!-- corner flowers (tile seam) -->
+    <use href="#fl" transform="translate(0 0)"/>
+    <use href="#fl" transform="translate(240 0)"/>
+    <use href="#fl" transform="translate(0 240)"/>
+    <use href="#fl" transform="translate(240 240)"/>
+    <!-- edge midpoints -->
+    <use href="#fl" transform="translate(120 0) scale(.7)"/>
+    <use href="#fl" transform="translate(120 240) scale(.7)"/>
+    <use href="#fl" transform="translate(0 120) scale(.7)"/>
+    <use href="#fl" transform="translate(240 120) scale(.7)"/>
+    <circle cx="60" cy="60" r="2.5"/><circle cx="180" cy="60" r="2.5"/>
+    <circle cx="60" cy="180" r="2.5"/><circle cx="180" cy="180" r="2.5"/>
+  </g>
+</svg>

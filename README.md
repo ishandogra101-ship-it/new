@@ -49,9 +49,12 @@ favicon.svg           flower favicon
    `data-placeholder` from each.
 3. **Contact email** — currently `alvinavarughese@netoyed.com` (from her card).
    Change the `mailto:` in `#contact` if she'd prefer a personal address.
-4. **Real portrait** — the "portrait" is currently her business card
-   (`assets/img/alvina-card.webp`) used as a scrapbook element in the hero and About.
-   Swap in a real photo any time (same filename = no other edits needed).
+4. **Real portrait** — the hero and About both show a designed **portrait
+   placeholder** at `assets/img/portrait.webp` (an arched "her portrait blooms
+   here" graphic). Drop a real photo in at that **same path/filename** and both
+   spots fill automatically — no other edits needed. Ideal photo is a vertical
+   4:5 crop. Her calling card (`assets/img/alvina-card.webp`) stays as a small
+   pinned scrapbook accent.
 5. **Newer work** — her recent campaign-results / customer-acquisition / SEO pieces
    weren't in the source files. Add images to `assets/img/` and copy a work card
    block in `index.html` to feature them.
