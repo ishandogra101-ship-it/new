@@ -74,7 +74,7 @@
       requestAnimationFrame(step);
     });
   }
-  var growthEl = $('.metrics');
+  var growthEl = $('.figures');
   if (growthEl && 'IntersectionObserver' in window) {
     var so = new IntersectionObserver(function (ents) {
       ents.forEach(function (e) { if (e.isIntersecting) { runCount(); so.disconnect(); } });

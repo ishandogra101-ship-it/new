@@ -1,20 +1,28 @@
 # Alvina Varughese — SEO, Content &amp; Growth Portfolio
 
-A single-page, story-driven personal portfolio. **Editorial** aesthetic —
-**beige · warm black · dark olive green** — built around a narrative: *I turn
-attention into customers.* SEO- and growth-focused, with a dedicated content
-section (including **The Happy Club** brand).
+A single-page portfolio for an SEO, content and growth marketer. Print-influenced
+editorial layout in beige, warm black and dark olive, led by the work itself.
+Includes **The Happy Club**, a brand Alvina designed and runs.
 
 Plain **static site** — no build step, no framework. HTML, CSS, vanilla JS.
 
-## Sections (image-led)
+## Sections
 
-1. **Hero** — thesis headline + a full-bleed **auto-scrolling filmstrip** of real work, so the first screen is visual.
-2. **01 Selected work** — a large **featured case** (Netoyed: big video + mosaic gallery, narrative in one line each) then big image **showcases** (SEO explainer, growth story, Canara, LessonX).
-3. **02 SEO &amp; Growth** — method (Get found → chosen → customers) + big count-up metrics. The growth/SEO centrepiece.
-4. **03 Content** — **The Happy Club** brand feature + a compact writing index.
-5. **04 About** — portrait + short bio.
-6. **05 Contact** — email + links.
+1. **Opening** — her name at full width, a plain intro in serif, and work images immediately.
+2. **Selected work** — a full-bleed dark case study (Netoyed: spec table, prose, big video, mosaic gallery), then projects in alternating asymmetric layouts (SEO explainer, growth story, Canara, LessonX, ISRO).
+3. **How I work** — prose plus a plain service list and three figures.
+4. **Writing** — The Happy Club brand feature and an editorial index of her writing.
+5. **About** — portrait and short bio.
+6. **Contact** — email and links.
+
+## Type and colour
+
+- **Archivo** (variable width, set wide and heavy) for display and UI.
+- **Newsreader** for all reading text. Serif body copy is deliberate: it is what keeps
+  the page from looking like a generated template.
+- Beige `#e6e0d1`, warm black `#14130e`, dark olive `#3f4a29`.
+- No monospace, no uppercase letter-spaced labels, no numbered section chips. Those are
+  the details that made earlier drafts read as AI-generated.
 
 ## Preview locally
 
@@ -47,13 +55,11 @@ python3 -m http.server 8000
    to describe the brand accurately. Logo: `assets/img/happyclub.webp`
    (background removed, transparent).
 6. **Newer work** — her recent SEO / customer-acquisition results weren't in the
-   source files. Add images to `assets/img/` and copy a `.wk` card in the work
-   section to feature them.
+   source files. Add images to `assets/img/` and copy one of the `.proj` blocks in the
+   work section to feature them.
 
 ## Notes
 
-- Fonts: **Bricolage Grotesque** (display/body), **Instrument Serif** (italic
-  accents), **Space Mono** (labels/numbers) via Google Fonts.
 - Images are WebP (~1.9MB total); the whole site is ~6MB incl. two brand videos.
 - SEO: semantic headings, meta description, Open Graph, and a `Person` JSON-LD block.
 - Respects `prefers-reduced-motion`. Mobile-first responsive; the hero is static
