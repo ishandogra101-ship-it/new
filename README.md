@@ -1,28 +1,49 @@
-# Alvina Varughese — SEO, Content &amp; Growth Portfolio
+# Alvina Varughese — portfolio
 
-A single-page portfolio for an SEO, content and growth marketer. Print-influenced
-editorial layout in beige, warm black and dark olive, led by the work itself.
-Includes **The Happy Club**, a brand Alvina designed and runs.
+A single-page portfolio for an SEO, content and growth marketer. Editorial,
+print-influenced layout: bone paper, warm black, dark olive, and a vermilion
+accent **sampled from her own Netoyed campaign artwork** (`#e84838` in the
+source creative, deepened to `#d2452a` for the page).
 
-Plain **static site** — no build step, no framework. HTML, CSS, vanilla JS.
+Plain static site. No build step, no framework, no dependencies.
 
-## Sections
+## Structure
 
-1. **Opening** — her name at full width, a plain intro in serif, and work images immediately.
-2. **Selected work** — a full-bleed dark case study (Netoyed: spec table, prose, big video, mosaic gallery), then projects in alternating asymmetric layouts (SEO explainer, growth story, Canara, LessonX, ISRO).
-3. **How I work** — prose plus a plain service list and three figures.
-4. **Writing** — The Happy Club brand feature and an editorial index of her writing.
-5. **About** — portrait and short bio.
-6. **Contact** — email and links.
+| | Section | Field | Pattern |
+|---|---|---|---|
+| | Masthead | bone | name at full width, metadata rails, cropped image slab |
+| | Statement | bone | oversized serif line + duotone image, slight rotation |
+| | Contents | bone | numbered index of the six projects |
+| 01 | Netoyed for Education | **ink**, full bleed | spec table, film, 12-col mosaic |
+| 02 | Google Helpful Content | bone + **vermilion block** | offset split |
+| 03 | Growth case story | bone | overlapping collage, three scales |
+| 04 | Canara Bank | **olive**, full bleed | images edge to edge |
+| 05 | LessonX launch | bone | editorial header, carousel |
+| 06 | ISRO | bone | image floats across the section boundary |
+| | Method | **ink** | Search / Story / Campaign / Compound |
+| | Figures | **vermilion** | oversized numerals |
+| | The Happy Club | bone | her own brand |
+| | Writing | bone | editorial index, nine pieces |
+| | Testimonial | **olive** | typographic quote |
+| | About | bone | portrait + statement |
+| | Contact | **ink** | full-width closing type |
 
-## Type and colour
+The colour fields alternate deliberately so the page reads calm → dense → bold
+→ colour rather than as a stack of equal sections.
 
-- **Archivo** (variable width, set wide and heavy) for display and UI.
-- **Newsreader** for all reading text. Serif body copy is deliberate: it is what keeps
-  the page from looking like a generated template.
-- Beige `#e6e0d1`, warm black `#14130e`, dark olive `#3f4a29`.
-- No monospace, no uppercase letter-spaced labels, no numbered section chips. Those are
-  the details that made earlier drafts read as AI-generated.
+## Type
+
+- **Anton** — display. Everything oversized: name, project titles, figures, the closing statement.
+- **Newsreader** — all reading text. Serif body copy is the deliberate choice; it is what keeps the page from reading as a generated template.
+- **Archivo** — utility only: labels, metadata, nav, captions.
+
+No monospace. No uppercase letter-spaced pseudo-labels beyond the small
+editorial marks. No serif-italic accent words inside headlines.
+
+If Anton fails to load (blocked network, offline), `main.js` measures the face
+on a canvas and adds `.no-anton`, which steps the display sizes down via
+`--dfit`. Without that guard the headline overflows the page, because the
+substitute face is much wider.
 
 ## Preview locally
 
@@ -31,37 +52,36 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-## Deploy — GitHub Pages (already set up on this branch)
+## Deploy — GitHub Pages
 
-1. Repo → **Settings → Pages**
-2. Source: **Deploy from a branch** → branch `claude/lucid-bardeen-sq5opi`, folder `/ (root)` → **Save**
-3. Live at `https://ishandogra101-ship-it.github.io/new/` in ~1–2 min.
+Repo → **Settings → Pages** → Deploy from a branch → `claude/lucid-bardeen-sq5opi`,
+folder `/ (root)`. Live at `https://ishandogra101-ship-it.github.io/new/`.
+`.nojekyll` is included and all paths are relative, so the `/new/` sub-path works.
 
-(`.nojekyll` is included; all asset paths are relative so it works under the `/new/` sub-path.) Also works drag-and-dropped onto Netlify, or via Vercel / Cloudflare Pages.
+## Before you go live
 
-## Before you go live — things to swap (search the files)
-
-1. **Metrics** — the SEO &amp; Growth section shows honest-but-generic figures
-   (150+ schools, 3 brands, 9 niches, Full funnel). Replace with real numbers —
-   impressions, engagement lift, pipeline growth — via the `data-count` /
-   `data-suffix` attributes and the `.metric__l` labels.
-2. **Social links** — the three `data-placeholder` links in `#contact`
-   (LinkedIn / Instagram / Résumé). Add real URLs and delete `data-placeholder`.
-3. **Contact email** — currently `alvinavarughese@netoyed.com`.
-4. **Portrait** — shown in the **About** section as an editorial placeholder
-   at `assets/img/portrait.webp`. Drop a real photo in at that same path
-   (vertical 4:5 crop is ideal) — no other edits needed.
-5. **The Happy Club** — the copy in `.club` is a sensible placeholder; edit it
-   to describe the brand accurately. Logo: `assets/img/happyclub.webp`
-   (background removed, transparent).
-6. **Newer work** — her recent SEO / customer-acquisition results weren't in the
-   source files. Add images to `assets/img/` and copy one of the `.proj` blocks in the
-   work section to feature them.
+1. **Figures** — the band shows only what is verifiable from her own material:
+   150+ schools (from her Netoyed banner) and 9 writing pieces (countable).
+   Real campaign metrics go in the commented slot in `index.html`; nothing is
+   estimated or invented.
+2. **Social links** — the three `data-placeholder` links in `#contact`. Add real
+   URLs and delete the `data-placeholder` attribute.
+3. **Portrait** — `assets/img/portrait.webp` is a placeholder shown in About.
+   Drop a real photo at the same path, vertical 4:5.
+4. **The Happy Club** — the copy is a reasonable placeholder; edit it to describe
+   the brand accurately.
+5. **Newer work** — add images to `assets/img/` and copy one of the `.p2`–`.p6`
+   blocks; each is a different composition, so pick the one that suits the piece.
 
 ## Notes
 
-- Images are WebP (~1.9MB total); the whole site is ~6MB incl. two brand videos.
-- SEO: semantic headings, meta description, Open Graph, and a `Person` JSON-LD block.
-- Respects `prefers-reduced-motion`. Mobile-first responsive; the hero is static
-  (no reveal delay) for a fast first paint and low bounce.
-- The earlier business-card image was removed; personal phone/address are not published.
+- Images are WebP, ~2MB total; the whole site is ~6MB including two brand films.
+- `assets/img/treated-students.webp` and `crop-classroom.webp` are derived
+  treatments (duotone, tall crop) of her originals, used as compositional elements.
+- Verified: 0px horizontal overflow at 360/390/430/768/1024/1280/1512, no JS errors.
+- Contrast passes WCAG AA at every text size; the vivid vermilion is reserved for
+  large display type, with a darker `--flare-text` for small text.
+- Respects `prefers-reduced-motion`. Above-the-fold imagery never waits on a
+  scroll reveal.
+- Lightbox is keyboard accessible (Enter/Space to open, arrows to move, Esc to
+  close) and returns focus on close.
