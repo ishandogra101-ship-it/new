@@ -7,15 +7,14 @@ section (including **The Happy Club** brand).
 
 Plain **static site** — no build step, no framework. HTML, CSS, vanilla JS.
 
-## Story / sections
+## Sections (image-led)
 
-1. **Hero** — thesis + a numbered index (table of contents) so visitors orient instantly (low bounce).
-2. **01 Story** — the narrative bio.
-3. **02 Capabilities** — SEO, content, growth, social, copy, acquisition.
-4. **03 Selected work** — a lead **case study** (Netoyed for Education: Challenge → Approach → Result) plus supporting campaigns (SEO explainer, growth story, LessonX, Canara, ISRO).
-5. **04 SEO &amp; Growth** — the method (Get found → Get chosen → Get customers) + metrics. This is the growth/SEO centrepiece.
-6. **05 Content** — SEO/editorial writing + **The Happy Club** brand feature.
-7. **06 Contact** — email + links.
+1. **Hero** — thesis headline + a full-bleed **auto-scrolling filmstrip** of real work, so the first screen is visual.
+2. **01 Selected work** — a large **featured case** (Netoyed: big video + mosaic gallery, narrative in one line each) then big image **showcases** (SEO explainer, growth story, Canara, LessonX).
+3. **02 SEO &amp; Growth** — method (Get found → chosen → customers) + big count-up metrics. The growth/SEO centrepiece.
+4. **03 Content** — **The Happy Club** brand feature + a compact writing index.
+5. **04 About** — portrait + short bio.
+6. **05 Contact** — email + links.
 
 ## Preview locally
 
@@ -41,7 +40,7 @@ python3 -m http.server 8000
 2. **Social links** — the three `data-placeholder` links in `#contact`
    (LinkedIn / Instagram / Résumé). Add real URLs and delete `data-placeholder`.
 3. **Contact email** — currently `alvinavarughese@netoyed.com`.
-4. **Portrait** — shown in the **01 Story** section as an editorial placeholder
+4. **Portrait** — shown in the **About** section as an editorial placeholder
    at `assets/img/portrait.webp`. Drop a real photo in at that same path
    (vertical 4:5 crop is ideal) — no other edits needed.
 5. **The Happy Club** — the copy in `.club` is a sensible placeholder; edit it
