@@ -42,10 +42,10 @@
   } else { rises.forEach(function (el) { el.classList.add('in'); }); }
 
   /* ---- image reveal: a short wipe, staggered within its own group ----
-     Anything already on screen at load is shown straight away; the masthead is
+     Anything already on screen at load is shown straight away; the cover is
      never gated on a reveal. Only imagery further down the page waits. */
   if ('IntersectionObserver' in window && !reduce) {
-    var groups = $$('.p1__grid, .p4__row, .statement, .p3__collage, .club, .about');
+    var groups = $$('.sp01__wall, .sp04__row, .sp03__stack, .club, .about');
     groups.forEach(function (g) {
       $$('img, figure', g).forEach(function (el, i) {
         el.classList.add('wipe');
@@ -104,14 +104,16 @@
     });
   }
 
-  /* ---- figures count up ---- */
+  /* ---- figures count up ----
+     The real value is already in the HTML (so no-JS / reduced-motion shows it
+     correctly, never "0"). We only animate up from 0 when motion is allowed. */
   var counted = false;
   function runCount() {
     if (counted) return; counted = true;
+    if (reduce) return;
     $$('.fig__n[data-count]').forEach(function (el) {
       var target = parseInt(el.getAttribute('data-count'), 10) || 0;
       var suffix = el.getAttribute('data-suffix') || '';
-      if (reduce) { el.textContent = target + suffix; return; }
       var start = null, dur = 1200;
       function step(ts) {
         if (!start) start = ts;
@@ -122,7 +124,7 @@
       requestAnimationFrame(step);
     });
   }
-  var band = $('.fig-band');
+  var band = $('.figs');
   if (band && 'IntersectionObserver' in window) {
     var so = new IntersectionObserver(function (ents) {
       ents.forEach(function (e) { if (e.isIntersecting) { runCount(); so.disconnect(); } });
