@@ -1,79 +1,47 @@
-# Alvina Varughese — portfolio, an editorial object
+# Alvina Varughese — portfolio (the fig tree)
 
-A single-page portfolio for an SEO, content and growth marketer, built to read
-like a printed publication rather than a website: a paper canvas, photographs
-taped and labelled, oversized numerals, handwritten annotations, and colour
-fields — not a stack of cards.
+A single-page, static portfolio. No build step is needed to host it: `index.html`,
+`assets/` and `favicon.svg` are the whole site.
 
-Plain static site. No build step, no framework, no dependencies.
+The story: a marketer who couldn't choose one fig, did all of it in her first job,
+and is now choosing where to go deep. The fig tree (from Sylvia Plath's *The Bell
+Jar*) runs through the layout: the hero branch, a skills section drawn as a tree with
+one fig per skill, case-study covers that are fig illustrations, and a closing line
+about what the reader is growing.
 
-## The composition language
+## Sections
+Hero · What I've delivered · The fig tree (story) · What I can deliver · Skills tree ·
+Tools · Experience · Four case studies · Selected creative + writing · Background
+(education, languages) · Contact.
 
-There is deliberately **no card system**. The reusable units are compositional:
+## Placeholders
+Anything missing from the brief is a **yellow dashed highlight** on the page
+(`<mark class="todo">`). Search `class="todo"` to find them all. Still to fill:
+tools, dates for two roles, case-study details and the events result, the second
+inbound deal's value, the platform behind the follower growth, your email and
+LinkedIn, a portrait, a line about The Happy Club, and links to the writing samples.
 
-- **taped / labelled photographs** — `.tape`, `.tag`, `.stamp` (CSS only, slight angles)
-- **oversized numerals and ghost words** — `.sp__num`, `.ghost` set behind content
-- **handwritten marks** — hand-drawn `<svg>` arrow, underline, circle, star and asterisk (`#m-*`), plus `.note` in a handwriting face
-- **colour fields** — ink, olive and a vermilion block break the paper up for pacing
-- **six project spreads, six different layouts** — feature wall (01), colour-block split (02), overlapping collage (03), edge-to-edge band (04), editorial (05), pinned-with-ghost-word (06). No project repeats another's composition.
+## Editing
+- Copy: `tools/index.template.html`, then run `python3 tools/build_page.py` to rebuild
+  `index.html` (the skills tree is generated into it).
+- Skills, their order, colour group and one-line descriptors: the `SKILLS` list in `tools/tree.py`.
+- Illustrations are drawn in code (`tools/art.py`, `tools/compose.py`) and rendered to
+  WebP with `tools/render.js` (needs Node + playwright-core + sharp). The finished
+  files are already in `assets/art/`, so you only need these to change the art.
+- Colours and type: the variables at the top of `assets/css/style.css`.
 
-The page alternates paper → ink → paper → colour → paper so it reads as a
-sequence of spreads, not equal sections.
+## Privacy and anonymising
+Per the brief, only Netoyed and Netoyed for Education are named. Client work (banks,
+agencies, schools) and the testimonial screenshot were removed, and so were images
+that show other organisations' logos. No personal phone number or employer email is
+published. Add a personal email in the contact section.
 
-## Type
-
-- **Anton** — poster display: the name, project titles, numerals, the closing word.
-- **Newsreader** — all reading text, and italic emphasis.
-- **Archivo** — utility only: labels, metadata, nav.
-- **Caveat** — the handwriting: annotations, the signature, small marginal notes. Used sparingly.
-
-If Anton fails to load (blocked network, offline), `main.js` measures it on a
-canvas and adds `.no-anton`, scaling the display type down via `--dfit` so the
-big headlines never overflow. Caveat degrades to a cursive fallback.
-
-## Colour
-
-The vermilion accent is **sampled from her own Netoyed campaign artwork**
-(`#e84838` in the source creative, deepened to `#d2452a`), so the palette comes
-from the work. Paper `#efe9dc`, ink `#17150f`, olive `#3d4926`, with a warm
-marker-yellow highlight used only under a couple of handwritten words.
-
-## Preview locally
-
-```bash
-python3 -m http.server 8000
-# open http://localhost:8000
-```
-
-## Deploy — GitHub Pages
-
-Repo → **Settings → Pages** → Deploy from a branch → `claude/lucid-bardeen-sq5opi`,
-folder `/ (root)`. Live at `https://ishandogra101-ship-it.github.io/new/`.
-`.nojekyll` is included and all paths are relative, so the `/new/` sub-path works.
-
-## Before you go live
-
-1. **Figures** — the band shows only what is verifiable from her own material:
-   150+ schools (from her Netoyed banner) and 9 writing pieces (countable). The
-   real value is written straight into the HTML, so it never reads "0". Real
-   campaign metrics go in the commented slot in `index.html`; nothing is estimated.
-2. **Social links** — the three `data-placeholder` links in the footer. Add real
-   URLs and delete the `data-placeholder` attribute.
-3. **Portrait** — `assets/img/portrait.webp` is a placeholder shown in About
-   (taped). Drop a real photo at the same path, vertical 4:5.
-4. **The Happy Club** — the copy is a reasonable placeholder; edit it to describe
-   the brand accurately.
-5. **Newer work** — add images to `assets/img/` and copy one of the six spread
-   blocks (`.sp--02` … `.sp--06`); each is a different composition.
+## Hosting
+GitHub Pages: Settings, Pages, deploy from the branch root. Paths are relative, so
+the `/new/` sub-path works. `.nojekyll` is included.
 
 ## Notes
-
-- Images are WebP, ~2MB total; the whole site is ~6MB including two brand films.
-- `treated-students.webp` / `crop-classroom.webp` are derived treatments of her
-  originals used as compositional elements.
-- Verified: 0px horizontal overflow at 360/390/430/768/834/1024/1280/1512, no JS errors.
-- Contrast meets WCAG AA at small text sizes (vivid vermilion reserved for large
-  display; darker `--flare-text` for small text).
-- Works with JavaScript disabled: the composition is CSS; motion is progressive
-  enhancement. Respects `prefers-reduced-motion`.
-- Lightbox is keyboard accessible (Enter/Space, arrows, Esc) and returns focus.
+- Fonts (Newsreader, Figtree) are self-hosted in `assets/fonts/`, so the page does not
+  depend on a third-party font service.
+- Works without JavaScript; motion is limited to a slow sway on the branch and figs,
+  and is switched off for `prefers-reduced-motion`.
