@@ -120,9 +120,8 @@ def hero():
 # ----------------------------------------------------------- COVERS (4:5)
 def cover_frame(bg, pattern_op, body_fn, leaf_dk=False):
     W, H = 1000, 1250
-    body = [leaf_field(W, H, pattern_op, seed=3, n=22, size=(150, 260))]
-    body.append(body_fn())
-    return svg(W, H, "".join(body), bg), W, H
+    # transparent: the cover sits directly on the painted canvas
+    return svg(W, H, body_fn()), W, H
 
 def cover_search():
     b = []

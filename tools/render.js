@@ -13,7 +13,7 @@ const only = process.argv[3] ? process.argv[3].split(',') : null;
     await p.waitForTimeout(250);
     await p.screenshot({ path: j.png, omitBackground: true });
     await p.close();
-    await sharp(j.png).webp({ quality: j.q, alphaQuality: 92, effort: 5 }).toFile(j.webp);
+    await (j.ow ? sharp(j.png).resize(j.ow) : sharp(j.png)).webp({ quality: j.q, alphaQuality: 92, effort: 5 }).toFile(j.webp);
     console.log(name, (fs.statSync(j.webp).size / 1024) | 0, 'KB');
   }
   await b.close();

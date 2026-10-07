@@ -31,6 +31,14 @@
     Object.keys(map).forEach(function (id) { spy.observe($('#' + id)); });
   }
 
+  /* paint washes breathe only while they're on screen */
+  if ('IntersectionObserver' in window && !reduce) {
+    var live = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.target.classList.toggle('live', e.isIntersecting); });
+    }, { rootMargin: '200px 0px' });
+    $$('.paint, .case__wash').forEach(function (el) { live.observe(el); });
+  }
+
   /* mobile menu */
   var toggle = $('#navToggle');
   if (toggle) {
