@@ -84,7 +84,7 @@ def build():
             twigs.append('<path d="M%s %s Q%s %s %s %s" fill="none" stroke="#5b3a2b" stroke-width="5" stroke-linecap="round"/>' % (
                 f(fx - rnd.uniform(-6, 6)), f(ly), f(fx + 6), f(ly + stem * .5), f(fx), f(top + 4)))
             nodes.append('<li class="node g-%s" style="--x:%s%%;--y:%s%%"><img class="node__fig" src="assets/art/fig-%s.webp" alt="" width="180" height="242" loading="lazy" decoding="async">'
-                         '<span class="node__txt"><b>%s</b><span>%s</span></span></li>' % (grp, f(fx / W * 100), f(top / H * 100), col, name, desc))
+                         '<span class="node__txt" data-calm><b>%s</b><span>%s</span></span></li>' % (grp, f(fx / W * 100), f(top / H * 100), col, name, desc))
     svg.append('<g class="tree__bark">%s%s%s%s</g>' % (roots, tk, "".join(limbs), "".join(twigs)))
     svg.insert(1, '<g>%s</g>' % "".join(leaf_svg))
     out = ('<div class="tree" id="tree" style="--ar:%d/%d"><svg class="tree__limbs" viewBox="0 0 %d %d" aria-hidden="true" focusable="false">%s</svg><ol class="tree__nodes">%s</ol></div>'
