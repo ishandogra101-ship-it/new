@@ -19,7 +19,7 @@
   var VS = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
   var FS = [
     'precision highp float;',
-    'uniform vec2 uRes;uniform float uScale,uScroll,uPageH,uT;uniform vec4 uCalm[16];',
+    'uniform vec2 uRes;uniform float uScale,uTop,uT;uniform vec4 uCalm[16];',
     /* one palette for the whole painting: warm paper, then rose, sage and
        lavender families that drift into each other, with ochre and plum accents */
     'const vec3 PAPER=vec3(.973,.937,.906);',
@@ -36,7 +36,7 @@
     'float lic(vec2 q,vec2 d,float sc){float s=0.;for(int k=-3;k<=3;k++){s+=vn((q+d*float(k)*6.)/sc);}return s/7.;}',
     'void main(){',
     ' vec2 css=vec2(gl_FragCoord.x,uRes.y-gl_FragCoord.y)/uScale;',
-    ' vec2 P=css+vec2(0.,uScroll);',
+    ' vec2 P=css+vec2(0.,uTop);',
     /* a slow, gentle swell, like paint on water */
     ' vec2 Q=P+vec2(sin(P.y*.006+uT*.25)*3.,cos(P.x*.005+uT*.2)*3.);',
     /* calm zones behind text */
@@ -99,35 +99,59 @@
   var loc = gl.getAttribLocation(prog, 'a');
   gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   var U = {};
-  ['uRes', 'uScale', 'uScroll', 'uPageH', 'uT', 'uCalm'].forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
+  ['uRes', 'uScale', 'uTop', 'uT', 'uCalm'].forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
 
-  var pageH = 1, calmRects = [];
+  /* The canvas lives in the page (not fixed to the screen), so the browser
+     scrolls it together with the content, perfectly in step. It covers the
+     screen plus a generous margin above and below; when a scroll gets near
+     its edge it jumps to the new spot and repaints there in the same frame.
+     Because the painting is drawn in page coordinates, the jump is invisible. */
+  var bed = cv.parentNode;
+  var bodyH = 1, calmRects = [];
   function measure() {
-    pageH = Math.max(root.scrollHeight, 1);
+    bodyH = Math.max(document.body.scrollHeight, 1);
     var sy = window.pageYOffset || 0;
     calmRects = Array.prototype.slice.call(document.querySelectorAll('[data-calm]')).map(function (el) {
       var r = el.getBoundingClientRect();
       return [r.left, r.top + sy, r.right, r.bottom + sy];
     }).filter(function (r) { return r[2] > r[0] && r[3] > r[1]; });
+    place(true);
   }
 
   /* render below device resolution: the paint is soft, and it saves battery */
-  var quality = 1, scale = 1, W = 0, H = 0;
+  var quality = 1, scale = 1, W = 0, H = 0, cssW = 0, cssH = 0, vh = 0, top = -1e9;
   function size() {
-    var w = window.innerWidth, h = window.innerHeight;
-    var base = w < 700 ? 0.55 : 0.7;
-    scale = Math.min(window.devicePixelRatio || 1, 1.5) * base * quality;
-    W = Math.max(1, Math.round(w * scale)); H = Math.max(1, Math.round(h * scale));
+    var w = bed.clientWidth || window.innerWidth;
+    vh = Math.max(window.innerHeight, document.documentElement.clientHeight);
+    cssW = w; cssH = Math.round(vh * 2.4);
+    var base = w < 700 ? 0.5 : 0.6;
+    scale = Math.min(window.devicePixelRatio || 1, 1.25) * base * quality;
+    W = Math.max(1, Math.round(cssW * scale)); H = Math.max(1, Math.round(cssH * scale));
     if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+    cv.style.height = cssH + 'px';
     gl.viewport(0, 0, W, H);
+    top = -1e9;
+  }
+
+  /* move the canvas only when the screen nears its edge; returns true if moved */
+  function place(force) {
+    var sy = window.pageYOffset || 0;
+    var edge = vh * 0.25;
+    if (!force && sy >= top + edge && sy + vh <= top + cssH - edge) return false;
+    var t = Math.round(sy - (cssH - vh) / 2);
+    t = Math.max(0, Math.min(t, bodyH - cssH));
+    if (t === top && !force) return false;
+    top = t;
+    cv.style.transform = 'translate3d(0,' + top + 'px,0)';
+    return true;
   }
 
   var calmBuf = new Float32Array(64);
-  function packCalm(sy, vh) {
+  function packCalm() {
     var n = 0;
     for (var i = 0; i < calmRects.length && n < 16; i++) {
       var r = calmRects[i];
-      if (r[3] < sy - 200 || r[1] > sy + vh + 200) continue;
+      if (r[3] < top - 200 || r[1] > top + cssH + 200) continue;
       calmBuf.set(r, n * 4); n++;
     }
     for (; n < 16; n++) calmBuf.set([-1e5, -1e5, -1e5 + 1, -1e5 + 1], n * 4);
@@ -135,49 +159,50 @@
 
   var t0 = performance.now();
   function draw() {
-    var sy = window.pageYOffset || 0;
-    packCalm(sy, window.innerHeight);
+    packCalm();
     gl.uniform2f(U.uRes, W, H);
     gl.uniform1f(U.uScale, scale);
-    gl.uniform1f(U.uScroll, sy);
-    gl.uniform1f(U.uPageH, pageH);
+    gl.uniform1f(U.uTop, top);
     gl.uniform1f(U.uT, reduce ? 40.0 : (performance.now() - t0) / 1000 + 40.0);
     gl.uniform4fv(U.uCalm, calmBuf);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
 
-  /* the paint moves slowly, so ~30 frames a second is plenty; if the device
-     still struggles, paint at a lower resolution */
+  /* the drift is slow, so ~25 frames a second is plenty; if the device still
+     struggles, paint at a lower resolution */
   var last = 0, slow = 0, frames = 0;
   function loop(now) {
     requestAnimationFrame(loop);
     if (document.hidden) return;
+    if (place(false)) { draw(); last = now; return; }
     var dt = now - last;
-    if (dt < 30) return;
+    if (dt < 38) return;
     last = now;
     draw();
     if (++frames > 20) {
-      slow = slow * 0.9 + (dt > 60 ? 0.1 : 0);
-      if (slow > 0.5 && quality > 0.5) { quality *= 0.8; slow = 0; size(); }
+      slow = slow * 0.9 + (dt > 80 ? 0.1 : 0);
+      if (slow > 0.5 && quality > 0.5) { quality *= 0.8; slow = 0; size(); place(true); }
     }
   }
 
-  measure(); size();
+  size(); measure();
   root.classList.add('has-water');
   draw();
-  if (reduce) {
-    window.addEventListener('scroll', function () { requestAnimationFrame(draw); }, { passive: true });
-    window.addEventListener('resize', function () { size(); measure(); draw(); });
-  } else {
-    /* scrolling repaints straight away so the canvas never lags the page */
-    window.addEventListener('scroll', function () { requestAnimationFrame(draw); }, { passive: true });
-    window.addEventListener('resize', function () { size(); measure(); });
-    requestAnimationFrame(loop);
-  }
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-  window.addEventListener('load', measure);
+  /* a scroll only needs a repaint when the canvas has to jump */
+  window.addEventListener('scroll', function () { if (place(false)) draw(); }, { passive: true });
+  var rw = 0;
+  window.addEventListener('resize', function () {
+    /* phones resize the viewport when the address bar slides; ignore small height-only changes */
+    var w = window.innerWidth;
+    if (w === rw && Math.abs(window.innerHeight - vh) < 120) return;
+    rw = w; size(); measure(); draw();
+  });
+  rw = window.innerWidth;
+  if (!reduce) requestAnimationFrame(loop);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); draw(); });
+  window.addEventListener('load', function () { measure(); draw(); });
   if ('ResizeObserver' in window) {
-    var rt; new ResizeObserver(function () { clearTimeout(rt); rt = setTimeout(function () { measure(); if (reduce) draw(); }, 120); }).observe(document.body);
+    var rt; new ResizeObserver(function () { clearTimeout(rt); rt = setTimeout(function () { measure(); draw(); }, 120); }).observe(document.body);
   }
   cv.addEventListener('webglcontextlost', function (e) { e.preventDefault(); root.classList.add('no-water'); });
 })();
