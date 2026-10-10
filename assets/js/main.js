@@ -1,12 +1,11 @@
 /* Alvina Varughese — interactions. Everything here is progressive enhancement:
-   the page reads fully without it. The painted water lives in water.js. */
+   the page reads fully without it. The painted canvas lives in water.js. */
 (function () {
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
-  var ripple = function (x, y, a) { if (window.paintRipple) window.paintRipple(x, y, a); };
 
   /* nav: scrolled state, back-to-top, active section */
   var nav = $('#nav'), toTop = $('#toTop');
@@ -31,16 +30,6 @@
       });
     }, { rootMargin: '-40% 0px -55% 0px' });
     Object.keys(map).forEach(function (id) { spy.observe($('#' + id)); });
-  }
-
-  /* the nav turns to night colours over the dark sections */
-  if (nav && 'IntersectionObserver' in window) {
-    var darkOn = {};
-    var dio = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { darkOn[e.target.id || 'c'] = e.isIntersecting; });
-      nav.classList.toggle('on-dark', Object.keys(darkOn).some(function (k) { return darkOn[k]; }));
-    }, { rootMargin: '0px 0px -94% 0px' });
-    $$('.dark').forEach(function (el) { dio.observe(el); });
   }
 
   /* mobile menu */
@@ -119,7 +108,7 @@
   }
 
   /* figs on strings: spring physics. The pointer's sideways speed pushes any
-     fig it passes; clicking a fig gives it a shove and a splash. */
+     fig it passes; clicking a fig gives it a gentle shove. */
   var swings = $$('.hang, .node__fig').map(function (el) {
     return { el: el, a: 0, v: 0, ph: Math.random() * 6.28, sp: 0.6 + Math.random() * 0.5, vis: false };
   });
@@ -137,8 +126,7 @@
     } else swings.forEach(function (s) { s.vis = true; });
     swings.forEach(function (s) {
       s.el.addEventListener('pointerdown', function (e) {
-        s.v += (e.clientX < s.el.getBoundingClientRect().left + s.el.offsetWidth / 2 ? 1 : -1) * 5;
-        ripple(e.clientX, e.clientY + window.pageYOffset, 1.4);
+        s.v += (e.clientX < s.el.getBoundingClientRect().left + s.el.offsetWidth / 2 ? 1 : -1) * 4;
       });
     });
     var t = 0;
@@ -183,7 +171,7 @@
     });
   }
 
-  /* stickers and tags: a splash when tapped */
+  /* stickers and tags give a little jiggle when tapped */
   $$('.sticker, .tag, .pills li, .langs li').forEach(function (el) {
     el.addEventListener('pointerdown', function (e) { el.classList.remove('jig'); void el.offsetWidth; el.classList.add('jig'); });
   });

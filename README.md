@@ -9,19 +9,19 @@ Jar*) runs through the page: a branch in the hero whose figs are the branches sh
 and a skills tree with one fig per skill.
 
 **The canvas.** The background is one live painting (`assets/js/water.js`, WebGL):
-flowing Van Gogh-style brush dashes over a watercolour wash, with light moving on the
-water. Each section only names its palette (`data-pal="..."`; palettes are at the top
-of `water.js`), and the paint scrolls with the page so the whole site is one canvas.
-Ripples spread from the pointer, from taps, and from things marked `data-ripple` as
-they scroll into view. The paint calms down behind anything marked `data-calm`, which
-keeps the words readable. Without WebGL the sections fall back to flat colour.
+soft watercolour washes under Van Gogh-style brush strokes that drift slowly along
+swirling currents, all the time, at a mellow pace. One palette (warm paper with rose,
+sage and lavender families, set at the top of the shader) wanders across the whole page
+on its own, so there are no section edges. The paint scrolls with the content and
+calms down behind anything marked `data-calm`, which keeps the text readable. Without
+WebGL (or JavaScript) the page shows a soft painted gradient instead.
 
-**Type.** Shrikhand (fat display), Bricolage Grotesque (body and condensed poster
-caps) and Kalam (handwriting), all self-hosted in `assets/fonts/`.
+**Type.** Bricolage Grotesque for everything, with Kalam (handwriting) for small notes
+and labels. Both are self-hosted in `assets/fonts/`.
 
-**Interaction.** Figs swing when the pointer passes (click one), headline letters
-bounce, doodles draw themselves, numbers count up, work samples tilt and float.
-All motion stops for `prefers-reduced-motion`.
+**Interaction.** Figs swing when the pointer passes (click one), a few letters bounce,
+doodles draw themselves, numbers count up, and work samples tilt and float. All motion
+stops for `prefers-reduced-motion`.
 
 ## Sections
 Hero · What I've delivered · The fig tree (story) · What I can deliver · Skills tree ·
